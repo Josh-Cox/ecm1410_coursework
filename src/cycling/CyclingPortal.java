@@ -1,8 +1,8 @@
-package cycling;
+//package cycling;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+//import java.io.IOException;
+//import java.time.LocalDateTime;
+//import java.time.LocalTime;
 
 /**
  * BadCyclingPortal is a minimally compiling, but non-functioning implementor
@@ -16,10 +16,22 @@ import java.time.LocalTime;
 
 public class CyclingPortal {
 
-	// method: create a rider
-	public int createRider(String riderName, int teamID, int yearOfBirth) {
-		Rider tempRider = new Rider(teamID, yearOfBirth, riderName);
+	/**
+	 * Creates a rider
+	 * @param riderName
+	 * @param teamID
+	 * @param yearOfBirth
+	 * @return riderID
+	 */
 
+	Rider riderObjects [] = new Rider[5];
+
+	public int createRider(String riderName, int teamID, int yearOfBirth) {
+
+		Rider tempRider = new Rider(teamID, yearOfBirth, riderName);
+		riderObjects[0] = tempRider;
 		return tempRider.getRiderID();
 	}
+
+	
  }

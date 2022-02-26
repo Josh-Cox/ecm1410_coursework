@@ -12,8 +12,14 @@ public class Rider {
     }
 
     // Contructor
+    public Rider() {
+        teamID = 0;
+        riderName = "Null";
+        yearOfBirth = 0;
+        riderID = 0;
+    }
     public Rider(int teamID, int yearOfBirth, String riderName) {
-        
+
         this.teamID = teamID;
         this.riderName = riderName;
         this.yearOfBirth = yearOfBirth;
