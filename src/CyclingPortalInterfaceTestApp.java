@@ -1,5 +1,5 @@
-import cycling.BadCyclingPortal;
-import cycling.BadMiniCyclingPortal;
+import cycling.CyclingPortal;
+//import cycling.BadMiniCyclingPortal;
 import cycling.CyclingPortalInterface;
 import cycling.MiniCyclingPortalInterface;
 
