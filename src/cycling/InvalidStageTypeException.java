@@ -1,4 +1,4 @@
-
+package cycling;
 
 /**
  * Thrown when attempting to add segments (sprints or mountains) to a time-trial stage.

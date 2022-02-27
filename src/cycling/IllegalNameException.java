@@ -1,4 +1,4 @@
-
+package cycling;
 
 /**
  * Thrown when attempting to assign a race name already in use in the

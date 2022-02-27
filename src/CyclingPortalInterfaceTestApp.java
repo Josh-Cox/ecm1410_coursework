@@ -1,7 +1,5 @@
 import cycling.CyclingPortal;
-//import cycling.BadMiniCyclingPortal;
 import cycling.CyclingPortalInterface;
-import cycling.MiniCyclingPortalInterface;
 
 /**
  * A short program to illustrate an app testing some minimal functionality of a
@@ -23,7 +21,7 @@ public class CyclingPortalInterfaceTestApp {
 	public static void main(String[] args) {
 		System.out.println("The system compiled and started the execution...");
 
-		MiniCyclingPortalInterface portal = new BadMiniCyclingPortal();
+		CyclingPortalInterface portal = new CyclingPortal();
 //		CyclingPortalInterface portal = new BadCyclingPortal();
 
 		assert (portal.getRaceIds().length == 0)
