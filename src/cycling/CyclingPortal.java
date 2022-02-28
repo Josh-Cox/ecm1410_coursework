@@ -16,6 +16,8 @@ import java.util.ArrayList;
  *
  */
 public class CyclingPortal implements CyclingPortalInterface {
+	//List of rider objects
+	ArrayList<Rider> riderList = new ArrayList<>();
 
 	@Override
 	public int[] getRaceIds() {
@@ -139,12 +141,10 @@ public class CyclingPortal implements CyclingPortalInterface {
 	 */
 	@Override
 	public int createRider(int teamID, String name, int yearOfBirth) throws IDNotRecognisedException, IllegalArgumentException {
+	
+		riderList.add(new Rider(teamID, yearOfBirth, name, riderList));
 		
-		ArrayList<Rider> riderList = new ArrayList<>();
-		riderList.add(new Rider(teamID, yearOfBirth, name));
-		System.out.println(riderList);
-		
-		return riderList.get(0).getRiderID();
+		return riderList.get(riderList.size() - 1).getRiderID();
 	}
 
 	@Override
