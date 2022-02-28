@@ -3,6 +3,7 @@ package cycling;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 
 /**
@@ -139,9 +140,11 @@ public class CyclingPortal implements CyclingPortalInterface {
 	@Override
 	public int createRider(int teamID, String name, int yearOfBirth) throws IDNotRecognisedException, IllegalArgumentException {
 		
-		Rider tempRider = new Rider(teamID, yearOfBirth, name);
-		//riderObjects[0] = tempRider;
-		return tempRider.getRiderID();
+		ArrayList<Rider> riderList = new ArrayList<>();
+		riderList.add(new Rider(teamID, yearOfBirth, name));
+		System.out.println(riderList);
+		
+		return riderList.get(0).getRiderID();
 	}
 
 	@Override

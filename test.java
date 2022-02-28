@@ -1,4 +1,3 @@
-package cycling;
 
 //import java.io.IOException;
 //import java.time.LocalDateTime;
@@ -14,7 +13,7 @@ package cycling;
  *
  */
 
-public class CyclingPortal implements CyclingPortalInterface {
+public class test implements CyclingPortalInterface {
 
 	/**
 	 * Creates a rider
@@ -24,14 +23,15 @@ public class CyclingPortal implements CyclingPortalInterface {
 	 * @return riderID
 	 */
 
-	Rider riderObjects [] = new Rider[5];
+	//Rider riderObjects [] = new Rider[5];
 
 	public int createRider(String riderName, int teamID, int yearOfBirth) {
 
-		Rider tempRider = new Rider(teamID, yearOfBirth, riderName);
-		riderObjects[0] = tempRider;
+		Rider riderObjects[];
+		riderObjects[1] = new Rider(teamID, yearOfBirth, riderName);
+		System.out.print(riderObjects[1]);
 		return tempRider.getRiderID();
 	}
 
 	
- }
+ } //javac -sourcepath src src/CyclingPortalInterfaceTestApp.java
