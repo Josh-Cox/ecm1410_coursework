@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+import javax.swing.text.StyledEditorKit.BoldAction;
+
 
 /**
  * CyclingPortal is an implementor
@@ -17,7 +19,7 @@ import java.util.ArrayList;
  */
 public class CyclingPortal implements CyclingPortalInterface {
 	//List of rider objects
-	ArrayList<Rider> riderList = new ArrayList<>();
+	
 
 	@Override
 	public int[] getRaceIds() {
@@ -110,8 +112,31 @@ public class CyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public int createTeam(String name, String description) throws IllegalNameException, InvalidNameException {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		boolean validTeamName = true, legalTeamName = true;
+
+		for(int i = 0;i < Team.teamList.size(); i++) {
+			if (Team.teamList.get(i).getTeamName() == name) {
+				legalTeamName = false;
+			}
+			else if((name == null) || (name == "") || (name.length() > 30) || (name.contains(" "))) {
+				validTeamName = false;
+			}
+            else {
+            }
+        }
+
+		if(validTeamName == false) {
+			throw new InvalidNameException();
+		}
+		else if(legalTeamName == false) {
+			throw new IllegalNameException();
+		}
+		else {
+			Team.teamList.add(new Team(name, description));
+			return Team.teamList.get(Team.teamList.size() - 1).getTeamID();
+		}
+		
 	}
 
 	@Override
@@ -141,10 +166,36 @@ public class CyclingPortal implements CyclingPortalInterface {
 	 */
 	@Override
 	public int createRider(int teamID, String name, int yearOfBirth) throws IDNotRecognisedException, IllegalArgumentException {
-	
-		riderList.add(new Rider(teamID, yearOfBirth, name, riderList));
 		
-		return riderList.get(riderList.size() - 1).getRiderID();
+		
+		boolean found = true, validName = true, validYOB = true;
+
+		for(int i = 0;i < Team.teamList.size(); i++) {
+			if (Team.teamList.get(i).getTeamID() == teamID) {
+			}
+            else {
+				found = false;
+            }
+        }
+		
+		if(name == null) {
+			validName = false;
+		}
+
+		if(yearOfBirth < 1900) {
+			validYOB = false;
+		}
+
+		if(found == false) {
+			throw new IDNotRecognisedException();
+		}
+		else if((validName == false) || (validYOB == false)) {
+			throw new IllegalArgumentException();
+		}
+		else {
+			Rider.riderList.add(new Rider(teamID, yearOfBirth, name, Rider.riderList));
+			return Rider.riderList.get(Rider.riderList.size() - 1).getRiderID();
+		}
 	}
 
 	@Override

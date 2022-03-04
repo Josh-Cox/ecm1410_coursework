@@ -10,6 +10,9 @@ public class Rider {
     private String riderName;
     private int yearOfBirth;
 
+    // Static Attributes
+    public static ArrayList<Rider> riderList = new ArrayList<>();
+
     // method: get rider ID
     public int getRiderID() {
         return riderID;
