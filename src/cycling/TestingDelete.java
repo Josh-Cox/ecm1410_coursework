@@ -8,16 +8,6 @@ public class TestingDelete {
         
 
     }
-    
-    public static void createRiderTest() {
-        
-        //Test create rider
-    
-        CyclingPortal.createRider(1, "Dora", 1998);
-
-        System.out.println(riderList.get(0).getRiderID());
-        System.out.println(riderList.get(1).getRiderID());
-    }
 
     public static void createTeamTest() {
         ArrayList<Team> teamList = new ArrayList<>();

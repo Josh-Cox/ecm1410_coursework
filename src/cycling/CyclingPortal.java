@@ -23,19 +23,49 @@ public class CyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public int[] getRaceIds() {
-		// TODO Auto-generated method stub
-		return null;
+
+		int [] raceIDList = new int[Race.raceList.size()];
+		if (Race.raceList.size() > 0 ) {
+			for(int i = 0;i < Race.raceList.size(); i++) {
+				raceIDList[i]= Race.raceList.get(i).getRaceID();
+			}
+			assert raceIDList[0]== Race.raceList.get(0).getRaceID();
+		}
+		
+		return raceIDList;
 	}
 
 	@Override
 	public int createRace(String name, String description) throws IllegalNameException, InvalidNameException {
-		// TODO Auto-generated method stub
-		return 0;
+
+		boolean legalRaceName = true;
+		boolean validRaceName = true; 
+
+		for(int i = 0;i < Race.raceList.size(); i++) {
+			if (Race.raceList.get(i).getRaceName() == name) {
+				legalRaceName = false;
+			}
+		}
+		if((name == null) || (name == "") || (name.length() > 30) || (name.contains(" "))) {
+			validRaceName = false;
+		}
+
+		if(validRaceName == false) {
+			throw new InvalidNameException();
+		}
+		else if(legalRaceName == false) {
+			throw new IllegalNameException();
+		}
+		else {
+			Race.raceList.add(new Race(name, description));
+			return Race.raceList.get(Race.raceList.size() - 1).getRaceID();
+		}
+	
 	}
 
 	@Override
 	public String viewRaceDetails(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -55,7 +85,16 @@ public class CyclingPortal implements CyclingPortalInterface {
 	public int addStageToRace(int raceId, String stageName, String description, double length, LocalDateTime startTime,
 			StageType type)
 			throws IDNotRecognisedException, IllegalNameException, InvalidNameException, InvalidLengthException {
-		// TODO Auto-generated method stub
+		
+		ArrayList<Stage> correctRace = Race.raceList.get(0).getRaceStage();
+		
+		for (int i = 0; i < Race.raceList.size(); i++) {
+			if (Race.raceList.get(i).getRaceID() == raceId) {
+				correctRace = Race.raceList.get(i).getRaceStage();
+			}
+		}
+		correctRace.add(new Stage(stageName, description, length, startTime, type));
+		
 		return 0;
 	}
 
