@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 public class Stage {
     
     //static attributes
-    public static ArrayList<Integer> stageIDList = new ArrayList<>();
+    public static ArrayList<Stage> stageList = new ArrayList<>();
 
     //instance attributes
     private int stageID;
@@ -15,6 +15,21 @@ public class Stage {
     private double stageLength;
     private LocalDateTime stageTime;
     private StageType stageType;
+
+    //method: get stageID
+    public int getStageID() {
+        return this.stageID;
+    }
+
+    //method: get stageName
+    public String getStageName() {
+        return this.stageName;
+    }
+
+    //method: get stageLength
+    public double getStageLength() {
+        return this.stageLength;
+    }
 
     //contructors 
     public Stage() {
@@ -28,12 +43,12 @@ public class Stage {
         this.stageTime = stageTime;
         this.stageType = stageType;
 
-        if (stageIDList.isEmpty()){
+        if (stageList.isEmpty()){
             this.stageID = 2000;
         }
         else{
             // Set ID 1 more than last team
-            this.stageID = stageIDList.get(stageIDList.size() - 1) + 1;
+            this.stageID = stageList.get(stageList.size() - 1).getStageID() + 1;
         }
     }
 }

@@ -18,12 +18,11 @@ import javax.swing.text.StyledEditorKit.BoldAction;
  *
  */
 public class CyclingPortal implements CyclingPortalInterface {
-	//List of rider objects
 	
 
 	@Override
 	public int[] getRaceIds() {
-
+		
 		int [] raceIDList = new int[Race.raceList.size()];
 		if (Race.raceList.size() > 0 ) {
 			for(int i = 0;i < Race.raceList.size(); i++) {
@@ -66,19 +65,59 @@ public class CyclingPortal implements CyclingPortalInterface {
 	@Override
 	public String viewRaceDetails(int raceId) throws IDNotRecognisedException {
 		
-		return null;
+		int correctRace = 0;
+		boolean validID = false;
+		for (int i = 0; i < Race.raceList.size(); i++) {
+			if (Race.raceList.get(i).getRaceID() == raceId) {
+				correctRace = i;
+				validID = true;
+			}
+		}
+
+		if (validID == false) {
+			throw new IDNotRecognisedException();
+		}
+		else {
+			return Race.raceList.get(correctRace).toString();
+		}
+		
 	}
 
 	@Override
 	public void removeRaceById(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
+
+		boolean validID = false;
+
+		for (int i = 0; i < Race.raceList.size(); i++) {
+			if (Race.raceList.get(i).getRaceID() == raceId) {
+				validID = true;
+				Race.raceList.remove(i);
+			}
+		}
+
+		if (validID == false) {
+			throw new IDNotRecognisedException();
+		}
 
 	}
 
 	@Override
 	public int getNumberOfStages(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		boolean validID = false;
+		int numStages = 0;
+
+		for (int i = 0; i < Race.raceList.size(); i++) {
+			if (Race.raceList.get(i).getRaceID() == raceId) {
+				validID = true;
+				numStages = Race.raceList.get(i).getNumOfStages();
+			}
+		}
+
+		if (validID == false) {
+			throw new IDNotRecognisedException();
+		}
+		return numStages;
 	}
 
 	@Override
@@ -86,16 +125,43 @@ public class CyclingPortal implements CyclingPortalInterface {
 			StageType type)
 			throws IDNotRecognisedException, IllegalNameException, InvalidNameException, InvalidLengthException {
 		
-		ArrayList<Stage> correctRace = Race.raceList.get(0).getRaceStage();
-		
+		boolean raceExists = false, legalStageName = true, validStageName = true, validStageLength = true;
+
 		for (int i = 0; i < Race.raceList.size(); i++) {
 			if (Race.raceList.get(i).getRaceID() == raceId) {
-				correctRace = Race.raceList.get(i).getRaceStage();
+				raceExists = true;
+				Race.raceList.get(i).getRaceStage().add(new Stage(stageName, description, length, startTime, type));
 			}
 		}
-		correctRace.add(new Stage(stageName, description, length, startTime, type));
-		
-		return 0;
+
+		for(int i = 0;i < Stage.stageList.size(); i++) {
+			if (Stage.stageList.get(i).getStageName() == stageName) {
+				legalStageName = false;
+			}
+		}
+
+		if((stageName == null) || (stageName == "") || (stageName.length() > 30) || (stageName.contains(" "))) {
+			validStageName = false;
+		}
+
+		if (length < 5) {
+			validStageLength = false;
+		}
+
+		if (raceExists == true) {
+			throw new IDNotRecognisedException();
+		}
+		else if (legalStageName == false) {
+			throw new IllegalNameException();
+		}
+		else if (validStageName == false) {
+			throw new InvalidNameException();
+		}
+		else if (validStageLength == false) {
+			throw new InvalidLengthException();
+		}
+
+		return Stage.stageList.get(Stage.stageList.size() - 1).getStageID();
 	}
 
 	@Override
@@ -106,13 +172,39 @@ public class CyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public double getStageLength(int stageId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		boolean validID = false;
+		double stageLength = 0;
+
+		for (int i = 0; i < Stage.stageList.size(); i++) {
+			if (Stage.stageList.get(i).getStageID() == stageId) {
+				validID = true;
+				stageLength = Stage.stageList.get(i).getStageLength();
+			}
+		}
+
+		if (validID == false) {
+			throw new IDNotRecognisedException();
+		}
+
+		return stageLength;
 	}
 
 	@Override
 	public void removeStageById(int stageId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
+
+		boolean validID = false;
+
+		for (int i = 0; i < Stage.stageList.size(); i++) {
+			if (Stage.stageList.get(i).getStageID() == stageId) {
+				validID = true;
+				Stage.stageList.remove(i);
+			}
+		}
+
+		if (validID == false) {
+			throw new IDNotRecognisedException();
+		}
 
 	}
 
@@ -180,21 +272,63 @@ public class CyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public void removeTeam(int teamId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
+		
+		boolean validID = false;
+
+		for (int i = 0; i < Team.teamList.size(); i++) {
+			if (Team.teamList.get(i).getTeamID() == teamId) {
+				validID = true;
+				Team.teamList.remove(i);
+			}
+		}
+
+		if (validID == false) {
+			throw new IDNotRecognisedException();
+		}
 
 	}
 
 	@Override
 	public int[] getTeams() {
-		// TODO Auto-generated method stub
-		return null;
+
+		int [] teamIDList = new int[Team.teamList.size()];
+		if (Team.teamList.size() > 0 ) {
+			for(int i = 0;i < Team.teamList.size(); i++) {
+				teamIDList[i]= Team.teamList.get(i).getTeamID();
+			}
+			assert teamIDList[0] == Team.teamList.get(0).getTeamID();
+		}
+		
+		return teamIDList;
 	}
 
 	@Override
 	public int[] getTeamRiders(int teamId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
+		int counter = 0;
+		int arraySize = 0;
+
+		for (int i = 0; i < Rider.riderList.size(); i++) {
+			if (Rider.riderList.get(i).getTeamID() == teamId) {
+				arraySize ++;
+			}
+		}
+
+		int [] teamRiderIDList = new int[arraySize];
+
+		if (Rider.riderList.size() > 0 ) {
+			for(int i = 0;i < Rider.riderList.size(); i++) {
+				if (Rider.riderList.get(i).getTeamID() == teamId) {
+					teamRiderIDList[counter] = Rider.riderList.get(i).getRiderID();
+					counter ++;
+				}
+			}
+			
+		}
+		
+		return teamRiderIDList;
+		
+	} 
 
 	/**
 	 * Creates a rider
@@ -239,7 +373,19 @@ public class CyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public void removeRider(int riderId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
+		
+		boolean validID = false;
+
+		for (int i = 0; i < Rider.riderList.size(); i++) {
+			if (Rider.riderList.get(i).getRiderID() == riderId) {
+				validID = true;
+				Rider.riderList.remove(i);
+			}
+		}
+
+		if (validID == false) {
+			throw new IDNotRecognisedException();
+		}
 
 	}
 
@@ -313,7 +459,19 @@ public class CyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public void removeRaceByName(String name) throws NameNotRecognisedException {
-		// TODO Auto-generated method stub
+		
+		boolean validName = false;
+
+		for (int i = 0; i < Race.raceList.size(); i++) {
+			if (Race.raceList.get(i).getRaceName() == name) {
+				validName = true;
+				Race.raceList.remove(i);
+			}
+		}
+
+		if (validName == false) {
+			throw new NameNotRecognisedException();
+		}
 
 	}
 

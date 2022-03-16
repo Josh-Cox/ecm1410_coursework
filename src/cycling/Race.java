@@ -9,9 +9,15 @@ public class Race {
     private int raceID;
     private String raceName;
     private String raceDesc;
-    private int NumOfStages;
-    private double totalLength; 
-    private ArrayList<Stage> stageList = new ArrayList<>();
+    private int numOfStages = 0;
+    private double totalLength = 0;
+    private ArrayList<Stage> raceStageList = new ArrayList<>();
+
+    // method: toString
+    public String toString() {
+        return ("Race ID: " + raceID + "\nName: " + raceName + "\nDescription: " + raceDesc + 
+        "\nNumber of Stages: " + numOfStages + "\nTotal Length: " + totalLength);
+    }
 
     // method: get race ID
     public int getRaceID(){
@@ -30,7 +36,29 @@ public class Race {
 
     // method: get stage list
     public ArrayList<Stage> getRaceStage() {
-        return this.stageList;
+        return this.raceStageList;
+    }
+
+    // method: get total length
+    public double getTotalLength() {
+        return this.totalLength;
+    }
+
+    // method: get number of stages
+    public int getNumOfStages() {
+        return this.numOfStages;
+    }
+
+    // method: get number of stages
+    public void setNumOfStages() {
+        numOfStages = raceStageList.size();
+    }
+
+    // method: get total length
+    public void setTotalLength() {
+        for (int i = 0; i < raceStageList.size(); i++) {
+            totalLength += raceStageList.get(i).getStageLength();
+        }
     }
 
 
