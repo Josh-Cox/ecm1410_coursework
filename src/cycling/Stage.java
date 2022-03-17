@@ -15,10 +15,16 @@ public class Stage {
     private double stageLength;
     private LocalDateTime stageTime;
     private StageType stageType;
+    private int raceID; 
 
     //method: get stageID
     public int getStageID() {
         return this.stageID;
+    }
+
+    // meathod: get race ID
+    public int getRaceID(){
+        return this.raceID;
     }
 
     //method: get stageName
@@ -36,18 +42,19 @@ public class Stage {
 
     }
 
-    public Stage(String stageName, String stageDesc, double stageLength, LocalDateTime stageTime, StageType stageType) {
+    public Stage(int raceID, String stageName, String stageDesc, double stageLength, LocalDateTime stageTime, StageType stageType) {
         this.stageName = stageName;
         this.stageDesc = stageDesc;
         this.stageLength = stageLength;
         this.stageTime = stageTime;
         this.stageType = stageType;
+        this.raceID= raceID;
 
         if (stageList.isEmpty()){
             this.stageID = 2000;
         }
         else{
-            // Set ID 1 more than last team
+            // Set ID 1 more than last stage
             this.stageID = stageList.get(stageList.size() - 1).getStageID() + 1;
         }
     }

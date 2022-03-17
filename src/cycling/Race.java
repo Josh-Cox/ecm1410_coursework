@@ -76,7 +76,7 @@ public class Race {
             this.raceID = 2000;
         }
         else{
-            // Set ID 1 more than last team
+            // Set ID 1 more than last race
             this.raceID = raceList.get(raceList.size() - 1).getRaceID() + 1;
         }
     }

@@ -130,7 +130,7 @@ public class CyclingPortal implements CyclingPortalInterface {
 		for (int i = 0; i < Race.raceList.size(); i++) {
 			if (Race.raceList.get(i).getRaceID() == raceId) {
 				raceExists = true;
-				Race.raceList.get(i).getRaceStage().add(new Stage(stageName, description, length, startTime, type));
+				Race.raceList.get(i).getRaceStage().add(new Stage(raceId, stageName, description, length, startTime, type));
 			}
 		}
 
@@ -166,8 +166,30 @@ public class CyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public int[] getRaceStages(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		int counter = 0;
+		int arraySize = 0;
+
+		for (int i = 0; i < Stage.stageList.size(); i++) {
+			if (Stage.stageList.get(i).getRaceID() == raceId) {
+				arraySize ++;
+			}
+		}
+
+		int [] raceStageIDList = new int[arraySize];
+
+		if (Stage.stageList.size() > 0 ) {
+			for(int i = 0;i < Stage.stageList.size(); i++) {
+				if (Stage.stageList.get(i).getRaceID() == raceId) {
+					raceStageIDList[counter] = Stage.stageList.get(i).getStageID();
+					counter ++;
+				}
+			}
+			
+		}
+		
+		return raceStageIDList;
+	
 	}
 
 	@Override
