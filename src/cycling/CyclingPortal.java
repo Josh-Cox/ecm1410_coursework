@@ -20,14 +20,30 @@ import javax.swing.text.StyledEditorKit.BoldAction;
 public class CyclingPortal implements CyclingPortalInterface {
 	
 
+	public boolean checkRaceID(int raceID) {
+
+		boolean validID = false;
+
+		for (int i = 0; i < Race.raceList.size(); i++) {
+			if (Race.raceList.get(i).getRaceID() == raceID) {
+				validID = true;
+			}
+		}
+
+		return validID;
+	}
+
 	@Override
 	public int[] getRaceIds() {
 		
+		//create array of correct size
 		int [] raceIDList = new int[Race.raceList.size()];
 		if (Race.raceList.size() > 0 ) {
 			for(int i = 0;i < Race.raceList.size(); i++) {
+				//fill array with race IDs
 				raceIDList[i]= Race.raceList.get(i).getRaceID();
 			}
+			//check first ID is correct
 			assert raceIDList[0]== Race.raceList.get(0).getRaceID();
 		}
 		
@@ -38,7 +54,7 @@ public class CyclingPortal implements CyclingPortalInterface {
 	public int createRace(String name, String description) throws IllegalNameException, InvalidNameException {
 
 		boolean legalRaceName = true;
-		boolean validRaceName = true; 
+		boolean validRaceName = true;
 
 		for(int i = 0;i < Race.raceList.size(); i++) {
 			if (Race.raceList.get(i).getRaceName() == name) {
@@ -57,6 +73,8 @@ public class CyclingPortal implements CyclingPortalInterface {
 		}
 		else {
 			Race.raceList.add(new Race(name, description));
+			assert Race.raceList.get(Race.raceList.size() - 1).getRaceName() == name;
+
 			return Race.raceList.get(Race.raceList.size() - 1).getRaceID();
 		}
 	
@@ -126,11 +144,11 @@ public class CyclingPortal implements CyclingPortalInterface {
 			throws IDNotRecognisedException, IllegalNameException, InvalidNameException, InvalidLengthException {
 		
 		boolean raceExists = false, legalStageName = true, validStageName = true, validStageLength = true;
-
+		int correctRace = 0;
 		for (int i = 0; i < Race.raceList.size(); i++) {
 			if (Race.raceList.get(i).getRaceID() == raceId) {
+				correctRace = i;
 				raceExists = true;
-				Race.raceList.get(i).getRaceStage().add(new Stage(raceId, stageName, description, length, startTime, type));
 			}
 		}
 
@@ -159,6 +177,12 @@ public class CyclingPortal implements CyclingPortalInterface {
 		}
 		else if (validStageLength == false) {
 			throw new InvalidLengthException();
+		}
+		else {
+			//add new stage to stageList and raceStageList
+			Stage.stageList.add(new Stage(raceId, stageName, description, length, startTime, type));
+			Race.raceList.get(correctRace).getRaceStage().add(
+				Stage.stageList.get(Stage.stageList.size() - 1));
 		}
 
 		return Stage.stageList.get(Stage.stageList.size() - 1).getStageID();

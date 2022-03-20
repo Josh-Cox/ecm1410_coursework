@@ -15,14 +15,14 @@ public class Stage {
     private double stageLength;
     private LocalDateTime stageTime;
     private StageType stageType;
-    private int raceID; 
+    private int raceID;
 
     //method: get stageID
     public int getStageID() {
         return this.stageID;
     }
 
-    // meathod: get race ID
+    //method: get race ID
     public int getRaceID(){
         return this.raceID;
     }
@@ -54,7 +54,7 @@ public class Stage {
             this.stageID = 2000;
         }
         else{
-            // Set ID 1 more than last stage
+            //set ID 1 more than last stage
             this.stageID = stageList.get(stageList.size() - 1).getStageID() + 1;
         }
     }

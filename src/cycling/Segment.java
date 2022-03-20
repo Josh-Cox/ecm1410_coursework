@@ -2,10 +2,11 @@ package cycling;
 import java.util.ArrayList;
 
 public class Segment {
-    // static attributes
+    
+    //static attributes
     public static ArrayList<Segment> segmentList = new ArrayList<>();
 
-    // instance attrbutes
+    //instance attrbutes
     private int segmentID;
     private int stageID;
     private double location;
@@ -13,12 +14,12 @@ public class Segment {
     private double averageGradient;
     private double length;
 
-    // method: get segment id 
+    //method: get segment id 
     public int getSegmentID() {
         return this.segmentID;
     }
 
-    // constructor 
+    //constructor 
     public Segment() {
 
     }
@@ -35,7 +36,7 @@ public class Segment {
             this.segmentID = 2000;
         }
         else{
-            // Set ID 1 more than last segment
+            //set ID 1 more than last segment
             this.segmentID = segmentList.get(segmentList.size() - 1).getSegmentID() + 1;
         }
     }

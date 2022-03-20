@@ -2,10 +2,10 @@ package cycling;
 import java.util.ArrayList;
 
 public class Race {
-    // static attributes 
+    //static attributes 
     public static ArrayList<Race> raceList = new ArrayList<>();
     
-    // instance attributes
+    //instance attributes
     private int raceID;
     private String raceName;
     private String raceDesc;
@@ -13,48 +13,48 @@ public class Race {
     private double totalLength = 0;
     private ArrayList<Stage> raceStageList = new ArrayList<>();
 
-    // method: toString
+    //method: toString
     public String toString() {
         return ("Race ID: " + raceID + "\nName: " + raceName + "\nDescription: " + raceDesc + 
         "\nNumber of Stages: " + numOfStages + "\nTotal Length: " + totalLength);
     }
 
-    // method: get race ID
+    //method: get race ID
     public int getRaceID(){
         return this.raceID;
     }
 
-    // method: get race name
+    //method: get race name
     public String getRaceName(){
         return this.raceName;
     }
 
-    // method: get race description
+    //method: get race description
     public String getRaceDesc(){
         return this.raceDesc;
     }
 
-    // method: get stage list
+    //method: get stage list
     public ArrayList<Stage> getRaceStage() {
         return this.raceStageList;
     }
 
-    // method: get total length
+    //method: get total length
     public double getTotalLength() {
         return this.totalLength;
     }
 
-    // method: get number of stages
+    //method: get number of stages
     public int getNumOfStages() {
         return this.numOfStages;
     }
 
-    // method: get number of stages
+    //method: set number of stages
     public void setNumOfStages() {
         numOfStages = raceStageList.size();
     }
 
-    // method: get total length
+    //method: set total length
     public void setTotalLength() {
         for (int i = 0; i < raceStageList.size(); i++) {
             totalLength += raceStageList.get(i).getStageLength();
@@ -62,7 +62,7 @@ public class Race {
     }
 
 
-    // constructors
+    //constructors
     
     public Race() {
          
@@ -76,7 +76,7 @@ public class Race {
             this.raceID = 2000;
         }
         else{
-            // Set ID 1 more than last race
+            //set ID 1 more than last race
             this.raceID = raceList.get(raceList.size() - 1).getRaceID() + 1;
         }
     }

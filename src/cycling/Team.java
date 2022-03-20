@@ -2,30 +2,30 @@ package cycling;
 import java.util.ArrayList;
 
 public class Team {
-    // Instance Attributes
+    //instance attributes
     private String teamName;
     private String teamDesc;
     private int teamID;
 
-    // Static Attributes
+    //static attributes
     public static ArrayList<Team> teamList = new ArrayList<>();
 
-    // method: get teamID
+    //method: get team ID
     public int getTeamID() {
         return this.teamID;
     }
 
-    // method: get teamName
+    //method: get team name
     public String getTeamName() {
         return this.teamName;
     }
 
-    // method: get teamDesc
+    //method: get team desc
     public String getTeamDesc() {
         return this.teamDesc;
     }
 
-    // Contructors
+    //contructors
     public Team() {
         this.teamName = "Null";
         this.teamDesc = "Null";
@@ -40,7 +40,7 @@ public class Team {
             this.teamID = 2000;
         }
         else{
-            // Set ID 1 more than last team
+            //set ID 1 more than last team
             this.teamID = teamList.get(teamList.size() - 1).getTeamID() + 1;
         }
     }

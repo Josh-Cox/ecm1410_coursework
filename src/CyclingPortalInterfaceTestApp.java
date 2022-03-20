@@ -1,5 +1,10 @@
+
+
 import cycling.CyclingPortal;
 import cycling.CyclingPortalInterface;
+import cycling.IllegalNameException;
+import cycling.InvalidNameException;
+import cycling.Race;
 
 /**
  * A short program to illustrate an app testing some minimal functionality of a
@@ -17,15 +22,19 @@ public class CyclingPortalInterfaceTestApp {
 	 * Test method.
 	 * 
 	 * @param args not used
+	 * 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IllegalNameException, InvalidNameException {
 		System.out.println("The system compiled and started the execution...");
 
 		CyclingPortalInterface portal = new CyclingPortal();
-//		CyclingPortalInterface portal = new BadCyclingPortal();
+//		CyclingPortalInterface portal = new CyclingPortal();
 
 		assert (portal.getRaceIds().length == 0)
 				: "Innitial SocialMediaPlatform not empty as required or not returning an empty array.";
+
+		portal.createRace("testRace", "testDesc");
+		assert (Race.raceList.get(0).getRaceName() == "testRac");
 
 	}
 

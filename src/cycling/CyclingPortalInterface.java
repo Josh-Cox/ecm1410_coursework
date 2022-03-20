@@ -1,5 +1,6 @@
 package cycling;
 
+
 import java.time.LocalTime;
 
 /**
