@@ -34,7 +34,7 @@ public class CyclingPortalInterfaceTestApp {
 				: "Innitial SocialMediaPlatform not empty as required or not returning an empty array.";
 
 		portal.createRace("testRace", "testDesc");
-		assert (Race.raceList.get(0).getRaceName() == "testRac");
+		assert (Race.raceList.get(0).getRaceName() == "testRace");
 
 	}
 
