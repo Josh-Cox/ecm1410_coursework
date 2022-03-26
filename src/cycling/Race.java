@@ -2,8 +2,6 @@ package cycling;
 import java.util.ArrayList;
 
 public class Race {
-    //static attributes 
-    public static ArrayList<Race> raceList = new ArrayList<>();
     
     //instance attributes
     private int raceID;
@@ -11,7 +9,6 @@ public class Race {
     private String raceDesc;
     private int numOfStages = 0;
     private double totalLength = 0;
-    private ArrayList<Stage> raceStageList = new ArrayList<>();
 
     //method: toString
     public String toString() {
@@ -34,11 +31,6 @@ public class Race {
         return this.raceDesc;
     }
 
-    //method: get stage list
-    public ArrayList<Stage> getRaceStage() {
-        return this.raceStageList;
-    }
-
     //method: get total length
     public double getTotalLength() {
         return this.totalLength;
@@ -50,25 +42,28 @@ public class Race {
     }
 
     //method: set number of stages
-    public void setNumOfStages() {
-        numOfStages = raceStageList.size();
+    public void setNumOfStages(ArrayList<Stage> stageList) {
+        numOfStages = 0;
+        for (int i = 0; i < stageList.size(); i++) {
+            if (stageList.get(i).getRaceID() == this.raceID) {
+                this.numOfStages ++;
+            }
+        }
     }
 
     //method: set total length
-    public void setTotalLength() {
-        for (int i = 0; i < raceStageList.size(); i++) {
-            totalLength += raceStageList.get(i).getStageLength();
+    public void setTotalLength(ArrayList<Stage> stageList) {
+        totalLength = 0;
+        for (int i = 0; i < stageList.size(); i++) {
+            if (stageList.get(i).getRaceID() == this.raceID) {
+                this.totalLength += stageList.get(i).getStageLength();
+            }
         }
     }
 
 
-    //constructors
-    
-    public Race() {
-         
-    } 
-    
-    public Race(String raceName, String raceDesc) {
+    //constructor
+    public Race(String raceName, String raceDesc, ArrayList<Race> raceList)  {
         this.raceName = raceName;
         this.raceDesc = raceDesc;
 

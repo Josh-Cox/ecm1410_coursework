@@ -5,8 +5,7 @@ import java.time.LocalDateTime;
 
 public class Stage {
     
-    //static attributes
-    public static ArrayList<Stage> stageList = new ArrayList<>();
+    
 
     //instance attributes
     private int stageID;
@@ -16,6 +15,7 @@ public class Stage {
     private LocalDateTime stageTime;
     private StageType stageType;
     private int raceID;
+    private String stageState;
 
     //method: get stageID
     public int getStageID() {
@@ -37,12 +37,27 @@ public class Stage {
         return this.stageLength;
     }
 
+    //method: get stageType
+    public StageType getStageType() {
+        return this.stageType;
+    }
+
+    //method: get stageState
+    public String getStageState() {
+        return this.stageState;
+    }
+
+    //method: set stageState
+    public void setStageState(String state) {
+        this.stageState = state;
+    }
+
     //contructors 
     public Stage() {
 
     }
 
-    public Stage(int raceID, String stageName, String stageDesc, double stageLength, LocalDateTime stageTime, StageType stageType) {
+    public Stage(int raceID, String stageName, String stageDesc, double stageLength, LocalDateTime stageTime, StageType stageType, ArrayList<Stage> stageList)  {
         this.stageName = stageName;
         this.stageDesc = stageDesc;
         this.stageLength = stageLength;

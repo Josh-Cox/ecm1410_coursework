@@ -7,8 +7,6 @@ public class Team {
     private String teamDesc;
     private int teamID;
 
-    //static attributes
-    public static ArrayList<Team> teamList = new ArrayList<>();
 
     //method: get team ID
     public int getTeamID() {
@@ -32,7 +30,7 @@ public class Team {
         this.teamID = 0;
     }
 
-    public Team(String teamName, String teamDesc) {
+    public Team(String teamName, String teamDesc, ArrayList<Team> teamList) {
         this.teamName = teamName;
         this.teamDesc = teamDesc;
 

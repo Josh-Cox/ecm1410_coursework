@@ -3,9 +3,6 @@ import java.util.ArrayList;
 
 public class Segment {
     
-    //static attributes
-    public static ArrayList<Segment> segmentList = new ArrayList<>();
-
     //instance attrbutes
     private int segmentID;
     private int stageID;
@@ -19,12 +16,27 @@ public class Segment {
         return this.segmentID;
     }
 
-    //constructor 
-    public Segment() {
+    //method: get stage id
+    public int getStageID() {
+        return this.stageID;
+    }
 
+    //constructor 
+    public Segment(int stageID, double location, ArrayList<Segment> segmentList) {
+        this.stageID = stageID;
+        this.location = location;
+        this.type = SegmentType.SPRINT;
+
+        if (segmentList.isEmpty()){
+            this.segmentID = 2000;
+        }
+        else{
+            //set ID 1 more than last segment
+            this.segmentID = segmentList.get(segmentList.size() - 1).getSegmentID() + 1;
+        }
     }
     
-    public Segment(int stageID, double location, SegmentType type, double averageGradient, double length) {
+    public Segment(int stageID, double location, SegmentType type, double averageGradient, double length, ArrayList<Segment> segmentList   ) {
         
         this.stageID = stageID;
         this.location = location;

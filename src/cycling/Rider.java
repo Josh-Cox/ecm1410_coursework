@@ -10,8 +10,7 @@ public class Rider implements java.io.Serializable{
     private String riderName;
     private int yearOfBirth;
 
-    //static attributes
-    public static ArrayList<Rider> riderList = new ArrayList<>();
+
 
     //method: get rider ID
     public int getRiderID() {
