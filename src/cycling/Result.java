@@ -9,7 +9,7 @@ public class Result {
     private int resultID;
     private int stageID;
     private int riderID;
-    private LocalTime checkpoints;
+    private LocalTime[] checkpoints;
 
     //method: get resultID
     public int getResultID() {
@@ -27,7 +27,7 @@ public class Result {
     }
 
     //constructor 
-    public Result(int stageID, int riderID, LocalTime checkpoints, ArrayList<Result> resultList) {
+    public Result(int stageID, int riderID, LocalTime[] checkpoints, ArrayList<Result> resultList) {
         this.stageID = stageID;
         this.riderID = riderID;
         this.checkpoints = checkpoints;

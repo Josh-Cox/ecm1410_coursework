@@ -24,12 +24,27 @@ import javax.swing.text.StyledEditorKit.BoldAction;
  *
  */
 public class CyclingPortal implements CyclingPortalInterface {
+
 	ArrayList<Rider> riderList = new ArrayList<>();
 	ArrayList<Stage> stageList = new ArrayList<>();
 	ArrayList<Segment> segmentList = new ArrayList<>();
 	ArrayList<Race> raceList = new ArrayList<>();
 	ArrayList<Team> teamList = new ArrayList<>();
 	ArrayList<Result> resultList = new ArrayList<>();
+
+	public boolean checkRaceName(String name) {
+		boolean validName = false;
+
+		//for every race
+		for (int i = 0; i < raceList.size(); i++) {
+			//if race exists
+			if (raceList.get(i).getRaceName() == name) {
+				validName = true;
+			}
+		}
+
+		return validName;
+	}
 	/**
 	 * Checks the id of a race exists 
 	 * @param raceID
@@ -330,14 +345,26 @@ public class CyclingPortal implements CyclingPortalInterface {
 			//throw exception
 			throw new IDNotRecognisedException();
 		}
-		else {
-			//for every race
-			for (int i = 0; i < raceList.size(); i++) {
-				//if race exists
-				if (raceList.get(i).getRaceID() == raceId) {
-					//remove race
-					raceList.remove(i);
+		
+		//for every race
+		for (int i = 0; i < raceList.size(); i++) {
+			//if race exists
+			if (raceList.get(i).getRaceID() == raceId) {
+				//remove stages
+				//for every stage
+				for (int j = 0; j < stageList.size(); j++) {
+					//if stage is part of race
+					if (stageList.get(j).getRaceID() == raceId) {
+						try {
+							removeStageById(stageList.get(j).getStageID());
+						}
+						catch (IDNotRecognisedException e) {
+							System.out.println("ID not recognised");
+						}
+					}
 				}
+				//remove race
+				raceList.remove(i);
 			}
 		}
 
@@ -540,16 +567,37 @@ public class CyclingPortal implements CyclingPortalInterface {
 			//throw exception
 			throw new IDNotRecognisedException();
 		}
-		else {
-			//for every stage
-			for (int i = 0; i < stageList.size(); i++) {
-				//if stage exists
-				if (stageList.get(i).getStageID() == stageId) {
-					//remove stage
-					stageList.remove(i);
+
+		//for every stage
+		for (int i = 0; i < stageList.size(); i++) {
+			//if stage exists
+			if (stageList.get(i).getStageID() == stageId) {
+
+				//for every segment
+				for (int j = 0; j < segmentList.size(); j++) {
+					//if segment is part of stage
+					if (segmentList.get(j).getStageID() == stageId) {
+						//remove segment
+						try {
+							removeSegment(segmentList.get(j).getSegmentID());
+						} catch (InvalidStageStateException e) {
+							System.out.println("Invalid Stage State");
+						}
+					}
 				}
+				//for every result
+				for (int j = 0; j < resultList.size(); j++) {
+					//if result is part of stage
+					if (resultList.get(j).getStageID() == stageId) {
+						//remove result
+						resultList.remove(j);
+					}
+				}
+				//remove stage
+				stageList.remove(i);
 			}
 		}
+		
 
 	}
 
@@ -648,7 +696,7 @@ public class CyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public void removeSegment(int segmentId) throws IDNotRecognisedException, InvalidStageStateException {
-		
+
 		//if segment doesn't exist
 		if (checkSegmentID(segmentId) == false) {
 			throw new IDNotRecognisedException();
@@ -906,29 +954,24 @@ public class CyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public int createRider(int teamID, String name, int yearOfBirth) throws IDNotRecognisedException, IllegalArgumentException {
-		
-		
-		boolean validName = true, validYOB = true;
 
-		
-		if(name == null) {
-			validName = false;
-		}
-
-		if(yearOfBirth < 1900) {
-			validYOB = false;
-		}
-
-		if(checkTeamID(teamID) == false) {
-			throw new IDNotRecognisedException();
-		}
-		else if((validName == false) || (validYOB == false)) {
+		//if name or year of birth is invalid
+		if ((name == null) || (yearOfBirth < 1900)) {
+			//throw exception
 			throw new IllegalArgumentException();
 		}
-		else {
-			riderList.add(new Rider(teamID, yearOfBirth, name, riderList));
-			return riderList.get(riderList.size() - 1).getRiderID();
+
+		//if team doesn't exist
+		if(checkTeamID(teamID) == false) {
+			//throw exception
+			throw new IDNotRecognisedException();
 		}
+
+		//add created rider to riderList
+		riderList.add(new Rider(teamID, yearOfBirth, name, riderList));
+		//return ID of created rider
+		return riderList.get(riderList.size() - 1).getRiderID();
+		
 	}
 
 	/**
@@ -968,13 +1011,45 @@ public class CyclingPortal implements CyclingPortalInterface {
 	public void registerRiderResultsInStage(int stageId, int riderId, LocalTime... checkpoints)
 			throws IDNotRecognisedException, DuplicatedResultException, InvalidCheckpointsException,
 			InvalidStageStateException {
-		// TODO Auto-generated method stub
+		
+			//if stage doesn't exist
+			if (checkStageID(stageId) == false) {
+				//throw exception
+				throw new IDNotRecognisedException();
+			}
+
+			//if rider doesn't exist
+			if (checkRiderID(riderId) == false) {
+				//throw exception
+				throw new IDNotRecognisedException();
+			}
+
+			//if stage state is invalid
+			if (checkStageState(stageId) == true) {
+				//throw exception
+				throw new InvalidStageStateException();
+			}
+
+			//TODO: ValidCheckpointsException
+			
+			//for every result
+			for (int i = 0; i < resultList.size(); i++) {
+				//if result is part of rider and stage
+				if ((resultList.get(i).getRiderID() == riderId) &&
+				(resultList.get(i).getStageID() == stageId)) {
+					//throw exception
+					throw new DuplicatedResultException();
+				}
+			}
+
+		//add created result to resultList
+		resultList.add(new Result(stageId, riderId, checkpoints, resultList));
 
 	}
 
 	@Override
 	public LocalTime[] getRiderResultsInStage(int stageId, int riderId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -1037,8 +1112,12 @@ public class CyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public void eraseCyclingPortal() {
-		// TODO Auto-generated method stub
-
+		riderList.clear();
+		raceList.clear();
+		stageList.clear();
+		segmentList.clear();
+		resultList.clear();
+		teamList.clear();
 	}
 
 	/**
@@ -1052,6 +1131,11 @@ public class CyclingPortal implements CyclingPortalInterface {
 			ObjectOutputStream out = new ObjectOutputStream(
 				new FileOutputStream(filename));
 			out.writeObject(riderList);
+			out.writeObject(raceList);
+			out.writeObject(stageList);
+			out.writeObject(segmentList);
+			out.writeObject(resultList);
+			out.writeObject(teamList);
 			out.close();
 		}
 		catch(IOException e) {
@@ -1073,6 +1157,11 @@ public class CyclingPortal implements CyclingPortalInterface {
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream(
 				filename));
 			riderList = (ArrayList<Rider>)in.readObject();
+			raceList = (ArrayList<Race>)in.readObject();
+			stageList = (ArrayList<Stage>)in.readObject();
+			segmentList = (ArrayList<Segment>)in.readObject();
+			resultList = (ArrayList<Result>)in.readObject();
+			teamList = (ArrayList<Team>)in.readObject();
 			in.close();
 		}
 		catch(IOException e) {
@@ -1090,20 +1179,37 @@ public class CyclingPortal implements CyclingPortalInterface {
 	 */
 
 	@Override
-	public void removeRaceByName(String name) throws NameNotRecognisedException {
+	public void removeRaceByName(String name) throws NameNotRecognisedException{
 		
-		boolean validName = false;
+		//if race doesn't exist
+		if (checkRaceName(name) == false) {
+			//throw exception
+			throw new NameNotRecognisedException();
+		}
 
+		//for every race
 		for (int i = 0; i < raceList.size(); i++) {
+			//if race exists
 			if (raceList.get(i).getRaceName() == name) {
-				validName = true;
+				//remove stages
+				int raceToRemove = raceList.get(i).getRaceID();
+				//for every stage
+				for (int j = 0; j < stageList.size(); j++) {
+					//if stage is part of race
+					if (stageList.get(j).getRaceID() == raceToRemove) {
+						try {
+							removeStageById(stageList.get(j).getStageID());
+						}
+						catch (IDNotRecognisedException e) {
+							System.out.println("ID not recognised");
+						}
+					}
+				}
+				//remove race
 				raceList.remove(i);
 			}
 		}
 
-		if (validName == false) {
-			throw new NameNotRecognisedException();
-		}
 
 	}
 
