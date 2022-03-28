@@ -26,6 +26,11 @@ public class Result {
         return this.stageID;
     }
 
+    //method: get checkpoints
+    public LocalTime[] getCheckpoints() {
+        return this.checkpoints;
+    }
+
     //constructor 
     public Result(int stageID, int riderID, LocalTime[] checkpoints, ArrayList<Result> resultList) {
         this.stageID = stageID;

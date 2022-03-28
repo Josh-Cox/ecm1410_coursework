@@ -6,11 +6,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.text.StyledEditorKit.BoldAction;
+import javax.xml.stream.events.EntityDeclaration;
 
 
 
@@ -226,6 +229,67 @@ public class CyclingPortal implements CyclingPortalInterface {
 		return validState;
 	}
 
+	/**
+	 * Gets the total elapsed time
+	 * @param riderID
+	 * @param stageID
+	 * @return totalTime
+	 */
+
+	 public LocalTime getTotalTime(int riderID, int stageID) {
+
+		long tempTime = 0;
+
+		LocalTime totalTime = LocalTime.of(0, 0, 0);
+		//for every result
+		for (int i = 0; i < resultList.size(); i++) {
+			//if result is part of rider and stage
+			if ((resultList.get(i).getRiderID() == riderID) &&
+			(resultList.get(i).getStageID() == stageID)) {
+				//get start and finish time
+				LocalTime[] checkPoints = resultList.get(i).getCheckpoints();
+				LocalTime startTime = checkPoints[0];
+				LocalTime finishTime = checkPoints[checkPoints.length - 1];
+
+				//get difference between start and finish time
+				tempTime = Duration.between(startTime, finishTime).toSeconds();
+
+				//convert to (int) seconds and mins
+				int seconds = (int)tempTime % 60;
+				int mins = (int)tempTime / 60;
+
+				//convert to LocalTime
+				totalTime = LocalTime.of(0, mins, seconds);
+			}
+		}
+		return totalTime;
+	 }
+
+	 /**
+	  * Sorts an array of LocalTime
+	  * @param arr
+	  * @return arr
+	  */
+	 public LocalTime[] sortArray(LocalTime[] arr) {
+		
+		int n = arr.length;
+        for (int i = 1; i < n; ++i) {
+            LocalTime key = arr[i];
+            int j = i - 1;
+ 
+            /* Move elements of arr[0..i-1], that are
+               greater than key, to one position ahead
+               of their current position */
+            while (j >= 0 && arr[j].compareTo(key) > 0) {
+                arr[j + 1] = arr[j];
+                j = j - 1;
+            }
+            arr[j + 1] = key;
+        }
+
+		return arr;
+	 }
+	 
 	/**
 	 * Gets an array of all race id's
 	 * @return raceIDlist 
@@ -1030,7 +1094,21 @@ public class CyclingPortal implements CyclingPortalInterface {
 				throw new InvalidStageStateException();
 			}
 
-			//TODO: ValidCheckpointsException
+			int numberOfSegments = 0;
+			//for every segment
+			for (int i = 0; i < segmentList.size(); i++) {
+				//if segment is part of stage
+				if (segmentList.get(i).getStageID() == stageId) {
+					//increment number of stages
+					numberOfSegments++;
+				}
+			}
+			
+			//if number of checkpoints != number of segments + 2
+			if (checkpoints.length != numberOfSegments + 2) {
+				//throw exception
+				throw new InvalidCheckpointsException();
+			}
 			
 			//for every result
 			for (int i = 0; i < resultList.size(); i++) {
@@ -1050,7 +1128,37 @@ public class CyclingPortal implements CyclingPortalInterface {
 	@Override
 	public LocalTime[] getRiderResultsInStage(int stageId, int riderId) throws IDNotRecognisedException {
 		
-		return null;
+		//if rider or stage doesn't exist
+		if ((checkRiderID(riderId) == false) || (checkStageID(stageId) == false)) {
+			//throw exception
+			throw new IDNotRecognisedException();
+		}
+
+		int arraySize = 0;
+		//for every result
+		for (int i = 0; i < resultList.size(); i++) {
+			//if result is part of rider and stage
+			if ((resultList.get(i).getRiderID() == riderId) &&
+			(resultList.get(i).getStageID() == stageId)) {
+				arraySize = resultList.get(i).getCheckpoints().length;
+			}
+		}
+
+		LocalTime[] segmentTimes = new LocalTime[arraySize + 1];
+
+		//for every result
+		for (int i = 0; i < resultList.size(); i++) {
+			//if result is part of rider and stage
+			if ((resultList.get(i).getRiderID() == riderId) &&
+			(resultList.get(i).getStageID() == stageId)) {
+				segmentTimes = resultList.get(i).getCheckpoints();
+			}
+		}
+
+		//append total elapsed time to array
+		segmentTimes[segmentTimes.length - 1] = getTotalTime(riderId, stageId);
+
+		return segmentTimes;
 	}
 
 	@Override
@@ -1088,7 +1196,39 @@ public class CyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public int[] getRidersRankInStage(int stageId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
+		
+		//if stage doesn't exist
+		if (checkStageID(stageId) == false) {
+			//throw exception
+			throw new IDNotRecognisedException();
+		}
+
+		int arraySize = 0;
+
+		//for every result
+		for (int i = 0; i < resultList.size(); i++) {
+			//if result is part of stage
+			if (resultList.get(i).getStageID() == stageId) {
+				//increment arraySize
+				arraySize++;
+			}
+		}
+
+
+		int[] riderRank = new int[arraySize];
+		int count = 0;
+
+		//for every result
+		for (int i = 0; i < resultList.size(); i++) {
+			//if result is part of stage
+			if (resultList.get(i).getStageID() == stageId) {
+				//add rider ID to riderRank array
+				riderRank[i] = resultList.get(count).getRiderID();
+				count ++;
+			}
+		}
+
+
 		return null;
 	}
 

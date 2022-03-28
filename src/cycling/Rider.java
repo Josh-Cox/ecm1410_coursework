@@ -10,8 +10,6 @@ public class Rider implements java.io.Serializable{
     private String riderName;
     private int yearOfBirth;
 
-
-
     //method: get rider ID
     public int getRiderID() {
         return riderID;
