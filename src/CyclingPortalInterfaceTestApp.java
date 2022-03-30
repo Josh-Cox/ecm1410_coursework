@@ -41,7 +41,7 @@ public class CyclingPortalInterfaceTestApp {
 		System.out.println("The system compiled and started the execution...");
 
 		CyclingPortalInterface portal = new CyclingPortal();
-//		CyclingPortalInterface portal = new CyclingPortal();
+		//CyclingPortalInterface portal = new CyclingPortal();
 
 		//create race
 		assert (portal.createRace("testRace", "testDesc") == 2000);
@@ -208,6 +208,7 @@ public class CyclingPortalInterfaceTestApp {
 			e.printStackTrace();
 		}
 		assert (portal.getRaceIds().length == 0);
+
 
 	}
 
