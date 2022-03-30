@@ -21,6 +21,16 @@ public class Segment {
         return this.stageID;
     }
 
+    //method: get segment type
+    public SegmentType getSegmentType() {
+        return this.type;
+    }
+
+    //method: get segment location
+    public double getSegmentLocation() {
+        return this.location;
+    }
+
     //constructor 
     public Segment(int stageID, double location, ArrayList<Segment> segmentList) {
         this.stageID = stageID;

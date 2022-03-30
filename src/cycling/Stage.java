@@ -12,7 +12,7 @@ public class Stage {
     private String stageName;
     private String stageDesc;
     private double stageLength;
-    private LocalDateTime stageTime;
+    private LocalDateTime startTime;
     private StageType stageType;
     private int raceID;
     private String stageState;
@@ -57,11 +57,11 @@ public class Stage {
 
     }
 
-    public Stage(int raceID, String stageName, String stageDesc, double stageLength, LocalDateTime stageTime, StageType stageType, ArrayList<Stage> stageList)  {
+    public Stage(int raceID, String stageName, String stageDesc, double stageLength, LocalDateTime startTime, StageType stageType, ArrayList<Stage> stageList)  {
         this.stageName = stageName;
         this.stageDesc = stageDesc;
         this.stageLength = stageLength;
-        this.stageTime = stageTime;
+        this.startTime = startTime;
         this.stageType = stageType;
         this.raceID= raceID;
 
