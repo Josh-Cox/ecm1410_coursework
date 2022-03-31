@@ -1,2 +1,0 @@
-java -ea CyclingPortalInterfaceTestApp
-javac -d bin -sourcepath src .\src\CyclingPortalInterfaceTestApp.java

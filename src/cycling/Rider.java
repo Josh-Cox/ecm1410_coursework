@@ -50,9 +50,6 @@ public class Rider implements java.io.Serializable{
         else{
             //set ID 1 more than last rider
             this.riderID = riderList.get(riderList.size() - 1).getRiderID() + 1;
-        }
-            
+        }   
     }
-
-
 }
