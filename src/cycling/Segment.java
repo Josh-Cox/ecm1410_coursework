@@ -11,22 +11,38 @@ public class Segment {
     private double averageGradient;
     private double length;
 
-    //method: get segment id 
+    
+    /** 
+     * method: get segment id 
+     * @return int
+     */
     public int getSegmentID() {
         return this.segmentID;
     }
 
-    //method: get stage id
+    
+    /** 
+     * method: get stage id
+     * @return int
+     */
     public int getStageID() {
         return this.stageID;
     }
 
-    //method: get segment type
+    
+    /** 
+     * method: get segment type
+     * @return SegmentType
+     */
     public SegmentType getSegmentType() {
         return this.type;
     }
 
-    //method: get segment location
+    
+    /** 
+     * method: get segment location
+     * @return double
+     */
     public double getSegmentLocation() {
         return this.location;
     }
@@ -62,8 +78,4 @@ public class Segment {
             this.segmentID = segmentList.get(segmentList.size() - 1).getSegmentID() + 1;
         }
     }
-    
-    
-    
-    
 }

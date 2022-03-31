@@ -10,38 +10,66 @@ public class Race {
     private int numOfStages = 0;
     private double totalLength = 0;
 
-    //method: toString
+    
+    /** 
+     * toString
+     * @return String
+     */
     public String toString() {
         return ("Race ID: " + raceID + "\nName: " + raceName + "\nDescription: " + raceDesc + 
         "\nNumber of Stages: " + numOfStages + "\nTotal Length: " + totalLength);
     }
 
-    //method: get race ID
+    
+    /** 
+     * get race ID
+     * @return int
+     */
     public int getRaceID(){
         return this.raceID;
     }
 
-    //method: get race name
+    
+    /** 
+     * get race name
+     * @return String
+     */
     public String getRaceName(){
         return this.raceName;
     }
 
-    //method: get race description
+    
+    /** 
+     * get race description
+     * @return String
+     */
     public String getRaceDesc(){
         return this.raceDesc;
     }
 
-    //method: get total length
+    
+    /** 
+     * get total length
+     * @return double
+     */
     public double getTotalLength() {
         return this.totalLength;
     }
 
-    //method: get number of stages
+    
+    /** 
+     * get number of stages
+     * @return int
+     */
     public int getNumOfStages() {
         return this.numOfStages;
     }
 
-    //method: set number of stages
+    
+    /** ,
+     * set number of stages
+     * @param stageList
+     */
     public void setNumOfStages(ArrayList<Stage> stageList) {
         numOfStages = 0;
         for (int i = 0; i < stageList.size(); i++) {
@@ -51,7 +79,11 @@ public class Race {
         }
     }
 
-    //method: set total length
+    
+    /** 
+     * set total length
+     * @param stageList
+     */
     public void setTotalLength(ArrayList<Stage> stageList) {
         totalLength = 0;
         for (int i = 0; i < stageList.size(); i++) {

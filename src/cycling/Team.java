@@ -8,17 +8,29 @@ public class Team {
     private int teamID;
 
 
-    //method: get team ID
+    
+    /** 
+     * method: get team ID
+     * @return int
+     */
     public int getTeamID() {
         return this.teamID;
     }
 
-    //method: get team name
+    
+    /** 
+     * method: get team name
+     * @return String
+     */
     public String getTeamName() {
         return this.teamName;
     }
 
-    //method: get team desc
+    
+    /** 
+     * method: get team desc
+     * @return String
+     */
     public String getTeamDesc() {
         return this.teamDesc;
     }

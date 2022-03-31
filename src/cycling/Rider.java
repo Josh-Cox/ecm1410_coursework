@@ -10,22 +10,38 @@ public class Rider implements java.io.Serializable{
     private String riderName;
     private int yearOfBirth;
 
-    //method: get rider ID
+    
+    /** 
+     * method: get rider ID
+     * @return int
+     */
     public int getRiderID() {
         return riderID;
     }
     
-    //method: get team ID
+    
+    /** 
+     * method: get team ID
+     * @return int
+     */
     public int getTeamID() {
         return teamID;
     }
 
-    //method: get rider name 
+    
+    /** 
+     * method: get rider name 
+     * @return String
+     */
     public String getRiderName() {
         return riderName;
     }
 
-    //method: get year of birth 
+    
+    /** 
+     * method: get year of birth 
+     * @return int
+     */
     public int getYearOfBirth() {
         return yearOfBirth;
     }

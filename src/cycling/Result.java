@@ -11,22 +11,38 @@ public class Result {
     private int riderID;
     private LocalTime[] checkpoints;
 
-    //method: get resultID
+    
+    /** 
+     * method: get resultID
+     * @return int
+     */
     public int getResultID() {
         return this.resultID;
     }
 
-    //method: get riderID
+    
+    /** 
+     * method: get riderID
+     * @return int
+     */
     public int getRiderID() {
         return this.riderID;
     }
 
-    //method: get stageID
+    
+    /** 
+     * method: get stageID
+     * @return int
+     */
     public int getStageID() {
         return this.stageID;
     }
 
-    //method: get checkpoints
+    
+    /** 
+     * method: get checkpoints
+     * @return LocalTime[]
+     */
     public LocalTime[] getCheckpoints() {
         return this.checkpoints;
     }
