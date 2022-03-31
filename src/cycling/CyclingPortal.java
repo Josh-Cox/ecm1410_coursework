@@ -185,7 +185,7 @@ public class CyclingPortal implements CyclingPortalInterface {
 
 	/**
 	 * Checks the location of segment
-	 * @param stageId
+	 * @param stageID
 	 * @param location
 	 * @return validLocation
 	 */
@@ -353,7 +353,6 @@ public class CyclingPortal implements CyclingPortalInterface {
 	/**
 	 * Removes a race
 	 * @param raceId
-	 * @return validID
 	 */
 	@Override
 	public void removeRaceById(int raceId) throws IDNotRecognisedException {
