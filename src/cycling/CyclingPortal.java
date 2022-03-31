@@ -268,81 +268,6 @@ public class CyclingPortal implements CyclingPortalInterface {
 		return totalTime;
 	 }
 
-	 /**
-	  * Gets an array of IDs and an array of times, sorted by adjusted times
-	  * @return tempArr
-	  */
-	public ArrayList<Object> getClassification(int raceId) {
-		LocalTime[] classTimes = null;
-		try {
-			classTimes = new LocalTime[getRidersRankInStage(getRaceStages(raceId)[0]).length];
-		} catch (IDNotRecognisedException e) {
-			e.printStackTrace();
-		}
-		int[] classRiders = null;
-		try {
-			classRiders = getRidersRankInStage(getRaceStages(raceId)[0]);
-		} catch (IDNotRecognisedException e) {
-			e.printStackTrace();
-		}
-		LocalTime riderAdjTime = null;
-		
-		//for every stage in race
-		int[] raceStages = null;
-		try {
-			raceStages = getRaceStages(raceId);
-		} catch (IDNotRecognisedException e) {
-			e.printStackTrace();
-		}
-		for (int i = 0; i < raceStages.length; i++) {
-			int[] stageRiders = null;
-			try {
-				stageRiders = getRidersRankInStage(i);
-			} catch (IDNotRecognisedException e) {
-				e.printStackTrace();
-			}
-			//for eveyr rider in stage
-			for (int j = 0; j < stageRiders.length; j++) {
-				try {
-					riderAdjTime = getRiderAdjustedElapsedTimeInStage(raceStages[i], stageRiders[j]);
-				} catch (IDNotRecognisedException e) {
-					e.printStackTrace();
-				}
-				//loop through riders array
-				for (int k = 0; k < classRiders.length; k++) {
-					//if rider ID matches
-					if (stageRiders[j] == classRiders[k]) {
-						classTimes[k] = classTimes[k].plusHours(riderAdjTime.getHour()).plusMinutes(
-							riderAdjTime.getMinute()).plusSeconds(riderAdjTime.getSecond()).plusNanos(
-								riderAdjTime.getNano());
-					}
-				}
-			}
-			
-		}
-		
-		//sort array
-		int n = classRiders.length;
-        for (int i = 0; i < n-1; i++)
-            for (int j = 0; j < n-i-1; j++)
-                if (classRiders[j] > classRiders[j+1])
-                {
-                    int temp = classRiders[j];
-                    classRiders[j] = classRiders[j+1];
-                    classRiders[j+1] = temp;
-                    
-                    LocalTime temp2 = classTimes[j];
-                    classTimes[j] = classTimes[j+1];
-                    classTimes[j+1] = temp2;
-                }
-
-		ArrayList<Object> tempArr= new ArrayList<>();
-		
-		tempArr.add(classTimes);
-		tempArr.add(classRiders);
-
-		return tempArr;
-	}
 	 
 	/**
 	 * Gets an array of all race id's
@@ -858,6 +783,7 @@ public class CyclingPortal implements CyclingPortalInterface {
 
 		//create correct length array
 		int [] stageSegmentIDList = new int[arraySize];
+		double[] stageSegmentLocations = new double[arraySize];
 
 		//if a segment exists
 		if (segmentList.size() > 0 ) {
@@ -867,10 +793,28 @@ public class CyclingPortal implements CyclingPortalInterface {
 				if (segmentList.get(i).getStageID() == stageId) {
 					//add rider id to array
 					stageSegmentIDList[counter] = segmentList.get(i).getSegmentID();
+					stageSegmentLocations[counter] = segmentList.get(i).getSegmentLocation();
 					counter ++;
 				}
 			}
 		}
+
+		int n = stageSegmentLocations.length;
+        for (int i = 0; i < n-1; i++) {
+            for (int j = 0; j < n-i-1; j++) {
+                if (stageSegmentLocations[j] > stageSegmentLocations[j+1])
+                {
+                    double temp = stageSegmentLocations[j];
+                    stageSegmentLocations[j] = stageSegmentLocations[j+1];
+                    stageSegmentLocations[j+1] = temp;
+
+                    int temp2 = stageSegmentIDList[j];
+                    stageSegmentIDList[j] = stageSegmentIDList[j+1];
+                    stageSegmentIDList[j+1] = temp2;
+                }
+			}
+		}
+
 		return stageSegmentIDList;
 	}
 
@@ -1168,7 +1112,7 @@ public class CyclingPortal implements CyclingPortalInterface {
 	}
 
 	/**
-	 * Gets adjuusted time for rider in stage
+	 * Gets adjusted time for rider in stage
 	 * @param riderId
 	 * @param stageId
 	 * @return riderAdjustedTime
@@ -1505,75 +1449,13 @@ public class CyclingPortal implements CyclingPortalInterface {
 		return riderIDList;
 	}
 
+	/**
+	 * Gets riders mountain points in stage
+	 * @param stageId
+	 */
 	@Override
 	public int[] getRidersMountainPointsInStage(int stageId) throws IDNotRecognisedException {
 
-		//if stage doesn't exist
-		if (checkStageID(stageId) == false) {
-			//throw exception 
-			throw new IDNotRecognisedException();
-		}
-
-		int[] riderIDList = getRidersRankInStage(stageId);
-		int[] riderPoints = new int[riderIDList.length];
-
-		//for every stage
-		for (int i = 0; i < segmentList.size(); i++) {
-			if (segmentList.get(i).getSegmentType() == SegmentType.C4) {
-				for (int j = 0; j < riderIDList.length; j++) {
-					switch (j) {
-						case 0:
-							riderPoints[j] = 50;
-							break;
-						case 1:
-							riderPoints[j] = 30;
-							break;
-						case 2:
-							riderPoints[j] = 20;
-							break;
-						case 3:
-							riderPoints[j] = 18;
-							break;
-						case 4:
-							riderPoints[j] = 16;
-							break;
-						case 5:
-							riderPoints[j] = 14;
-							break;
-						case 6:
-							riderPoints[j] = 12;
-							break;
-						case 7:
-							riderPoints[j] = 10;
-							break;
-						case 8:
-							riderPoints[j] = 8;
-							break;
-						case 9:
-							riderPoints[j] = 7;
-							break;
-						case 10:
-							riderPoints[j] = 6;
-							break;
-						case 11:
-							riderPoints[j] = 5;
-							break;
-						case 12:
-							riderPoints[j] = 4;
-							break;
-						case 13:
-							riderPoints[j] = 3;
-							break;
-						case 14:
-							riderPoints[j] = 2;
-							break;
-						default:
-							riderIDList[j] = 0;
-							break;
-					}
-				}
-			}
-		}
 		return null;
 	}
 
@@ -1686,16 +1568,52 @@ public class CyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public LocalTime[] getGeneralClassificationTimesInRace(int raceId) throws IDNotRecognisedException {
-		//if race doesn't exist
-		if (checkRaceID(raceId) == false) {
-			//throw exception
-			throw new IDNotRecognisedException();
+		LocalTime[] classTimes = new LocalTime[getRidersRankInStage(getRaceStages(raceId)[0]).length];
+
+		int[] classRiders = getRidersRankInStage(getRaceStages(raceId)[0]);
+
+		LocalTime riderAdjTime = null;
+		
+		//for every stage in race
+		int[] raceStages = getRaceStages(raceId);
+
+		for (int i = 0; i < raceStages.length; i++) {
+			int[] stageRiders = getRidersRankInStage(i);
+
+			//for eveyr rider in stage
+			for (int j = 0; j < stageRiders.length; j++) {
+
+				riderAdjTime = getRiderAdjustedElapsedTimeInStage(raceStages[i], stageRiders[j]);
+
+				//loop through riders array
+				for (int k = 0; k < classRiders.length; k++) {
+					//if rider ID matches
+					if (stageRiders[j] == classRiders[k]) {
+						classTimes[k] = classTimes[k].plusHours(riderAdjTime.getHour()).plusMinutes(
+							riderAdjTime.getMinute()).plusSeconds(riderAdjTime.getSecond()).plusNanos(
+								riderAdjTime.getNano());
+					}
+				}
+			}
+			
 		}
+		
+		//sort array
+		int n = classRiders.length;
+        for (int i = 0; i < n-1; i++)
+            for (int j = 0; j < n-i-1; j++)
+                if (classRiders[j] > classRiders[j+1])
+                {
+                    int temp = classRiders[j];
+                    classRiders[j] = classRiders[j+1];
+                    classRiders[j+1] = temp;
+                    
+                    LocalTime temp2 = classTimes[j];
+                    classTimes[j] = classTimes[j+1];
+                    classTimes[j+1] = temp2;
+                }
 
-		ArrayList<Object> tempArr = getClassification(raceId);
-		LocalTime[] temp = (LocalTime[])tempArr.get(0);
-
-		return temp;
+		return classTimes;
 	}
 
 	/**
@@ -1724,23 +1642,60 @@ public class CyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public int[] getRidersMountainPointsInRace(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
+		
+		
 		return null;
 	}
 
 	@Override
 	public int[] getRidersGeneralClassificationRank(int raceId) throws IDNotRecognisedException {
 		
-		//if rider doesn't exist
-		if (checkRaceID(raceId) == false) {
-			//throw exception
-			throw new IDNotRecognisedException();
-		}
+		LocalTime[] classTimes = new LocalTime[getRidersRankInStage(getRaceStages(raceId)[0]).length];
 
-		ArrayList<Object> tempArr = getClassification(raceId);
-		int []temp = (int[])tempArr.get(1);
+		int[] classRiders = getRidersRankInStage(getRaceStages(raceId)[0]);
+
+		LocalTime riderAdjTime = null;
 		
-		return temp;
+		//for every stage in race
+		int[] raceStages = getRaceStages(raceId);
+
+		for (int i = 0; i < raceStages.length; i++) {
+			int[] stageRiders = getRidersRankInStage(i);
+
+			//for eveyr rider in stage
+			for (int j = 0; j < stageRiders.length; j++) {
+
+				riderAdjTime = getRiderAdjustedElapsedTimeInStage(raceStages[i], stageRiders[j]);
+
+				//loop through riders array
+				for (int k = 0; k < classRiders.length; k++) {
+					//if rider ID matches
+					if (stageRiders[j] == classRiders[k]) {
+						classTimes[k] = classTimes[k].plusHours(riderAdjTime.getHour()).plusMinutes(
+							riderAdjTime.getMinute()).plusSeconds(riderAdjTime.getSecond()).plusNanos(
+								riderAdjTime.getNano());
+					}
+				}
+			}
+			
+		}
+		
+		//sort array
+		int n = classRiders.length;
+        for (int i = 0; i < n-1; i++)
+            for (int j = 0; j < n-i-1; j++)
+                if (classRiders[j] > classRiders[j+1])
+                {
+                    int temp = classRiders[j];
+                    classRiders[j] = classRiders[j+1];
+                    classRiders[j+1] = temp;
+                    
+                    LocalTime temp2 = classTimes[j];
+                    classTimes[j] = classTimes[j+1];
+                    classTimes[j+1] = temp2;
+                }
+
+		return classRiders;
 	}
 
 	@Override
